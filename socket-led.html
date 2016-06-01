@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>test</title>
+</head>
+<body>
+
+<button id="btn0">OFF</button>
+<button id="btn1">ON</button>
+
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+(function () { 
+  "use strict";
+
+
+  var socket = io('http://localhost:3000');
+  var _id;
+  
+  var _btn0 = document.getElementById("btn0");
+  var _btn1 = document.getElementById("btn1");
+
+  _btn0.addEventListener( "click", _clickOff, false );
+  _btn1.addEventListener( "click", _clickOn, false );
+
+
+  /**
+   * ONクリック
+   */
+  function _clickOn(){
+    console.log("on");
+    
+    var obj = {}
+    obj.led = "on";
+    _sendMessage( obj );
+  }
+  /**
+   * OFFクリック
+   */
+  function _clickOff(){
+    console.log("off");
+
+    var obj = {}
+    obj.led = "off";
+    _sendMessage( obj );
+  }
+
+
+
+  /**
+   * 受信：接続した時に１回受信
+   */
+  socket.on('success', function (data) {
+    console.log("接続に成功しました", data);
+
+    _id = data.id;
+  });
+  /**
+   * 受信：誰かが接続してきた
+   */
+  socket.on('connected', function (data) {
+    console.log("誰かが接続しました", data);
+  });
+
+
+  /**
+   * 受信：他の人が送信したデータを受信
+   */
+  socket.on('broadcast', function (data) {
+    console.log("データ受信しました", data);
+  });
+
+  /**
+   * 受信：他の人が接続解除しました
+   */
+  socket.on('disconnected', function (data) {
+    console.log("誰かが退出しました", data);
+  });
+
+  /**
+   * ソケットサーバーにメッセージ送信
+   */
+  function _sendMessage(obj){
+    console.log("_sendMessage", obj);
+    
+    // 送信
+    socket.emit('message', obj);
+  }
+
+
+
+})();
+</script>
+
+</body>
+</html>
