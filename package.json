@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/yoshiweb/arduino-javascript/issues"
   },
-  "homepage": "https://github.com/yoshiweb/arduino-javascript#readme"
+  "homepage": "https://github.com/yoshiweb/arduino-javascript#readme",
+  "devDependencies": {
+    "socket.io": "^1.4.6"
+  }
 }
